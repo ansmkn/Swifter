@@ -60,7 +60,7 @@ public extension Swifter {
 
     This object contains an array of user IDs for users who have contributed to this status (an example of a status that has been contributed to is this one). In practice, there is usually only one ID in this array. The JSON renders as such "contributors":[8285392].
     */
-    public func getTweet(forID id: String, count: Int? = nil, trimUser: Bool? = nil, includeMyRetweet: Bool? = nil, includeEntities: Bool? = nil, success: SuccessHandler? = nil, failure: FailureHandler? = nil) {
+    public func getTweet(forID id: String, count: Int? = nil, trimUser: Bool? = nil, includeMyRetweet: Bool? = nil, includeEntities: Bool? = nil, exendedMode: Bool? = false, success: SuccessHandler? = nil, failure: FailureHandler? = nil) {
         let path = "statuses/show.json"
 
         var parameters = Dictionary<String, Any>()
@@ -69,7 +69,9 @@ public extension Swifter {
         parameters["trim_user"] ??= trimUser
         parameters["include_my_retweet"] ??= includeMyRetweet
         parameters["include_entities"] ??= includeEntities
-
+        if let mode = exendedMode, mode {
+            parameters["tweet_mode"] = "extended"
+        }
         self.getJSON(path: path, baseURL: .api, parameters: parameters, success: { json, _ in success?(json) }, failure: failure)
     }
 
