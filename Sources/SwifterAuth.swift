@@ -76,7 +76,8 @@ public extension Swifter {
     public func authorize(with callbackURL: URL, presentFrom presentingViewController: UIViewController? , success: TokenSuccessHandler?, failure: FailureHandler? = nil) {
         self.postOAuthRequestToken(with: callbackURL, success: { token, response in
             var requestToken = token!
-            NotificationCenter.default.addObserver(forName: .SwifterCallbackNotification, object: nil, queue: .main) { notification in
+            NotificationCenter.default.addObserver(forName: .SwifterCallbackNotification, object: nil, queue: .main) {
+                [unowned self, weak presentingViewController] notification in
                 NotificationCenter.default.removeObserver(self)
                 presentingViewController?.presentedViewController?.dismiss(animated: true, completion: nil)
                 let url = notification.userInfo![CallbackNotification.optionsURLKey] as! URL
