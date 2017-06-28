@@ -199,6 +199,10 @@ public class HTTPRequest: NSObject, URLSessionDataDelegate {
         #if os(iOS)
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
         #endif
+        
+        defer {
+            session.finishTasksAndInvalidate()
+        }
 
         if let error = error {
             self.failureHandler?(error)
